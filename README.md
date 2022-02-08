@@ -1,20 +1,16 @@
 # Pong-LPC-2022
 
-<img alt="Repository size" src="https://img.shields.io/github/repo-size/tmmarquess/Pong-LPC-2022">
-
-<a href="https://github.com/tmmarquess/Pong-LPC-2022/commits/main">
-    <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/tmmarquess/Pong-LPC-2022">
-</a>
-
-<img alt="License" src="https://img.shields.io/badge/license-MIT-brightgreen">
-
-<img alt="Issues" src="https://img.shields.io/github/issues/tmmarquess/Pong-LPC-2022">
-
-<img alt="Fork" src="https://img.shields.io/github/forks/tmmarquess/Pong-LPC-2022?style=social">
-  
-<img alt="Watchers" src="https://img.shields.io/github/watchers/tmmarquess/Pong-LPC-2022?style=social">
- 
-<img alt="Stargazers" src="https://img.shields.io/github/stars/tmmarquess/Pong-LPC-2022?style=social">
+<p style="text-align: left;">
+    <img alt="Repository size" src="https://img.shields.io/github/repo-size/tmmarquess/Pong-LPC-2022">
+    <a href="https://github.com/tmmarquess/Pong-LPC-2022/commits/main">
+        <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/tmmarquess/Pong-LPC-2022">
+    </a>
+    <img alt="License" src="https://img.shields.io/badge/license-MIT-brightgreen">
+    <img alt="Issues" src="https://img.shields.io/github/issues/tmmarquess/Pong-LPC-2022">
+    <img alt="Fork" src="https://img.shields.io/github/forks/tmmarquess/Pong-LPC-2022?style=social">
+    <img alt="Watchers" src="https://img.shields.io/github/watchers/tmmarquess/Pong-LPC-2022?style=social">
+    <img alt="Stargazers" src="https://img.shields.io/github/stars/tmmarquess/Pong-LPC-2022?style=social">
+</p>
 
 ## Sobre 📚
 
