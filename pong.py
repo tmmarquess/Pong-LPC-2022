@@ -27,12 +27,16 @@ right_paddle = turtle.Turtle()  # right paddle
 current_right_paddle_xpos = 350  # current right paddle x coordinate
 current_right_paddle_ypos = 1  # current right y coordinate
 
-hud = turtle.Turtle()  # head-up display
-current_hud_xpos = 1  # current head-up display x coordinate
-current_hud_ypos = 260  # current head-up display x coordinate
+player_1_hud = turtle.Turtle()  # player 1 head-up display
+current_player_1_hud_xpos = -50  # current  player 1 head-up display x coordinate
+current_player_1_ypos = 260  # current  player 1 head-up display x coordinate
 
-score_player_1 = 0  # score player 1
-score_player_2 = 0  # score player 2
+player_2_hud = turtle.Turtle()  # player 2 head-up display
+current_player_2_hud_xpos = 50  # current  player 2 head-up display x coordinate
+current_player_2_ypos = 260  # current  player 2 head-up display x coordinate
+
+player_1_score = 0  # player 1 score
+player_2_score = 0  # player 2 score
 
 dividing_line = []  # list which represents pong game dividing line
 current_dividing_line_xpos = []  # list of dividing line current x coordinate
@@ -54,8 +58,11 @@ def initialize_game():
 
     right_paddle.up()
 
-    hud.hideturtle()
-    hud.up()
+    player_1_hud.hideturtle()
+    player_1_hud.up()
+
+    player_2_hud.hideturtle()
+    player_2_hud.up()
 
     aux_ypos = -270
     for i in range(lines):
@@ -106,7 +113,7 @@ def right_paddle_down():
 def update_ball_position():
     global current_ball_xpos, current_ball_ypos, touch_upper_wall, touch_lower_wall, touch_rigth_wall, touch_left_wall,\
         current_left_paddle_xpos, current_left_paddle_ypos, current_right_paddle_xpos, current_right_paddle_ypos, \
-        score_player_1, score_player_2
+        player_1_score, player_2_score
 
     # changes the current position of the ball based on collisions
     if touch_upper_wall and touch_rigth_wall:
@@ -143,9 +150,9 @@ def update_ball_position():
         touch_lower_wall = True
         touch_rigth_wall = False
         touch_left_wall = True
-        score_player_2 += 1
-        hud.clear()
-        hud.write('{} : {}'.format(score_player_1, score_player_2), align='center', font=('Small Fonts', 24, 'normal'))
+        player_2_score += 1
+        player_2_hud.clear()
+        player_2_hud.write('{}'.format(player_2_score), align='center', font=('Small Fonts', 24, 'normal'))
 
     # collision with the righ wall:
     if current_ball_xpos > 390:
@@ -156,9 +163,9 @@ def update_ball_position():
         touch_lower_wall = True
         touch_rigth_wall = True
         touch_left_wall = False
-        score_player_1 += 1
-        hud.clear()
-        hud.write('{} : {}'.format(score_player_1, score_player_2), align='center', font=('Small Fonts', 24, 'normal'))
+        player_1_score += 1
+        player_1_hud.clear()
+        player_1_hud.write('{}'.format(player_1_score), align='center', font=('Small Fonts', 24, 'normal'))
 
     # collision with left paddle
     if current_ball_xpos < -330 and current_left_paddle_ypos + 50 > current_ball_ypos > current_left_paddle_ypos - 50:
@@ -181,7 +188,7 @@ def update_states():
 
 
 def draw():
-    global should_draw, current_ball_xpos, current_ball_ypos, score_player_1, score_player_2
+    global should_draw, current_ball_xpos, current_ball_ypos, player_1_score, player_2_score
     if not should_draw:  # There is no change. Don't draw and return immediately
         return
 
@@ -202,11 +209,17 @@ def draw():
     right_paddle.shapesize(stretch_wid=5, stretch_len=1)
     right_paddle.goto(current_right_paddle_xpos, current_right_paddle_ypos)
 
-    hud.shape('square')
-    hud.color('white')
-    hud.goto(current_hud_xpos, current_hud_ypos)
-    hud.clear()
-    hud.write('{} : {}'.format(score_player_1, score_player_2), align='center', font=('Small Fonts', 24, 'normal'))
+    player_1_hud.shape('square')
+    player_1_hud.color('white')
+    player_1_hud.goto(current_player_1_hud_xpos, current_player_1_ypos)
+    player_1_hud.clear()
+    player_1_hud.write('{}'.format(player_1_score), align='center', font=('Small Fonts', 24, 'normal'))
+
+    player_2_hud.shape('square')
+    player_2_hud.color('white')
+    player_2_hud.goto(current_player_2_hud_xpos, current_player_2_ypos)
+    player_2_hud.clear()
+    player_2_hud.write('{}'.format(player_2_score), align='center', font=('Small Fonts', 24, 'normal'))
 
     for i in range(lines):
         dividing_line[i].clear()
