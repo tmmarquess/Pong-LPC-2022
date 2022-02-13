@@ -1,4 +1,5 @@
 import turtle
+import winsound
 
 # Initialize screen
 screen = turtle.Screen()
@@ -11,7 +12,7 @@ turtle.tracer(0, 0)
 # Constants
 FPS = 30  # constant: refresh about 30 times per second
 TIMER_VALUE = 1000 // FPS  # the timer value in milliseconds for timer events
-SPEED = 400  # 100 units per second
+SPEED = 200  # ball speed
 
 # Variables
 ball = turtle.Turtle()  # ball of the pong game
@@ -109,16 +110,19 @@ def update_ball_position():
 
     # collision with the upper wall
     if current_ball_ypos > 290:
+        winsound.PlaySound("pong_bounce.wav", winsound.SND_ASYNC)
         touch_upper_wall = True
         touch_lower_wall = False
 
     # collision with the lower wall
     if current_ball_ypos < -290:
+        winsound.PlaySound("pong_bounce.wav", winsound.SND_ASYNC)
         touch_lower_wall = True
         touch_upper_wall = False
 
     # collision with the left wall:
     if current_ball_xpos < -390:
+        winsound.PlaySound("258020__kodack__arcade-bleep-sound.wav", winsound.SND_ASYNC)
         current_ball_xpos = 1
         current_ball_ypos = 1
         touch_upper_wall = False
@@ -131,6 +135,7 @@ def update_ball_position():
 
     # collision with the righ wall:
     if current_ball_xpos > 390:
+        winsound.PlaySound("258020__kodack__arcade-bleep-sound.wav", winsound.SND_ASYNC)
         current_ball_xpos = 1
         current_ball_ypos = 1
         touch_upper_wall = False
@@ -143,10 +148,13 @@ def update_ball_position():
 
     # collision with left paddle
     if current_ball_xpos < -330 and current_left_paddle_ypos + 50 > current_ball_ypos > current_left_paddle_ypos - 50:
+        winsound.PlaySound("pong_bounce.wav", winsound.SND_ASYNC)
         touch_left_wall = True
         touch_rigth_wall = False
 
+    # collision with right paddle
     if current_ball_xpos > 330 and current_right_paddle_ypos + 50 > current_ball_ypos > current_right_paddle_ypos - 50:
+        winsound.PlaySound("pong_bounce.wav", winsound.SND_ASYNC)
         touch_rigth_wall = True
         touch_left_wall = False
 
