@@ -1,5 +1,6 @@
 import turtle
 
+# Initialize screen
 screen = turtle.Screen()
 screen.setup(800, 600)
 screen.title("Pong Game")
@@ -28,11 +29,47 @@ touch_rigth_wall = False
 touch_left_wall = True
 
 
-def initialze_game():
+def initialize_game():
     ball.hideturtle()
     ball.up()
     left_paddle.up()
     right_paddle.up()
+
+
+def left_paddle_up():
+    global current_left_paddle_ypos
+
+    if current_left_paddle_ypos < 250:
+        current_left_paddle_ypos += 30
+    else:
+        current_left_paddle_ypos = 250
+
+
+def left_paddle_down():
+    global current_left_paddle_ypos
+
+    if current_left_paddle_ypos > -250:
+        current_left_paddle_ypos -= 30
+    else:
+        current_left_paddle_ypos = -250
+
+
+def right_paddle_up():
+    global current_right_paddle_ypos
+
+    if current_right_paddle_ypos < 250:
+        current_right_paddle_ypos += 30
+    else:
+        current_right_paddle_ypos = 250
+
+
+def right_paddle_down():
+    global current_right_paddle_ypos
+
+    if current_right_paddle_ypos > -250:
+        current_right_paddle_ypos -= 30
+    else:
+        current_right_paddle_ypos = -250
 
 
 def update_position():
@@ -105,8 +142,15 @@ def draw():
     should_draw = False  # just finished drawing, set should_draw to False
 
 
+# keyboard
+screen.listen()
+screen.onkeypress(left_paddle_up, 'w')
+screen.onkeypress(left_paddle_down, 's')
+screen.onkeypress(right_paddle_up, 'Up')
+screen.onkeypress(right_paddle_down, 'Down')
+
 screen.bgcolor('black')
-initialze_game()
+initialize_game()
 update_states()
 while True:
     draw()  # draw forever
