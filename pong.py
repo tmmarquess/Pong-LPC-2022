@@ -9,7 +9,7 @@ turtle.speed(0)
 turtle.tracer(0, 0)
 
 # Constants
-FPS = 60  # constant: refresh about 30 times per second
+FPS = 30  # constant: refresh about 30 times per second
 TIMER_VALUE = 1000 // FPS  # the timer value in milliseconds for timer events
 SPEED = 400  # 100 units per second
 
@@ -17,12 +17,21 @@ SPEED = 400  # 100 units per second
 ball = turtle.Turtle()  # ball of the pong game
 current_ball_xpos = 1  # current ball x coordinate
 current_ball_ypos = 1  # current ball y coordinate
-left_paddle = turtle.Turtle()
+
+left_paddle = turtle.Turtle()  # left paddle
 current_left_paddle_xpos = -350  # current left paddle x coordinate
 current_left_paddle_ypos = 1  # current left y coordinate
-right_paddle = turtle.Turtle()
+
+right_paddle = turtle.Turtle()  # right paddle
 current_right_paddle_xpos = 350  # current right paddle x coordinate
 current_right_paddle_ypos = 1  # current right y coordinate
+
+hud = turtle.Turtle()  # head-up display
+current_hud_xpos = 1  # current head-up display x coordinate
+current_hud_ypos = 260  # current head-up display x coordinate
+
+score_player_1 = 0  # score player 1
+score_player_2 = 0  # score player 2
 
 # Variables to control colissions
 touch_upper_wall = False
@@ -34,8 +43,13 @@ touch_left_wall = True
 def initialize_game():
     ball.hideturtle()
     ball.up()
+
     left_paddle.up()
+
     right_paddle.up()
+
+    hud.hideturtle()
+    hud.up()
 
 
 def left_paddle_up():
@@ -76,7 +90,8 @@ def right_paddle_down():
 
 def update_ball_position():
     global current_ball_xpos, current_ball_ypos, touch_upper_wall, touch_lower_wall, touch_rigth_wall, touch_left_wall,\
-        current_left_paddle_xpos, current_left_paddle_ypos, current_right_paddle_xpos, current_right_paddle_ypos
+        current_left_paddle_xpos, current_left_paddle_ypos, current_right_paddle_xpos, current_right_paddle_ypos, \
+        score_player_1, score_player_2
 
     # changes the current position of the ball based on collisions
     if touch_upper_wall and touch_rigth_wall:
@@ -110,6 +125,9 @@ def update_ball_position():
         touch_lower_wall = True
         touch_rigth_wall = False
         touch_left_wall = True
+        score_player_2 += 1
+        hud.clear()
+        hud.write("{} : {}".format(score_player_1, score_player_2), align="center", font=("Small Fonts", 24, "normal"))
 
     # collision with the righ wall:
     if current_ball_xpos > 390:
@@ -119,6 +137,9 @@ def update_ball_position():
         touch_lower_wall = True
         touch_rigth_wall = True
         touch_left_wall = False
+        score_player_1 += 1
+        hud.clear()
+        hud.write("{} : {}".format(score_player_1, score_player_2), align="center", font=("Small Fonts", 24, "normal"))
 
     # collision with left paddle
     if current_ball_xpos < -330 and current_left_paddle_ypos + 50 > current_ball_ypos > current_left_paddle_ypos - 50:
@@ -138,7 +159,7 @@ def update_states():
 
 
 def draw():
-    global should_draw, current_ball_xpos, current_ball_ypos
+    global should_draw, current_ball_xpos, current_ball_ypos, score_player_1, score_player_2
     if not should_draw:  # There is no change. Don't draw and return immediately
         return
 
@@ -158,6 +179,12 @@ def draw():
     right_paddle.shape("square")
     right_paddle.shapesize(stretch_wid=5, stretch_len=1)
     right_paddle.goto(current_right_paddle_xpos, current_right_paddle_ypos)
+
+    hud.shape("square")
+    hud.color("white")
+    hud.goto(current_hud_xpos, current_hud_ypos)
+    hud.clear()
+    hud.write("{} : {}".format(score_player_1, score_player_2), align="center", font=("Small Fonts", 24, "normal"))
 
     should_draw = False  # just finished drawing, set should_draw to False
 
