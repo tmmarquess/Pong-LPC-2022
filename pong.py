@@ -4,7 +4,7 @@ import winsound
 # Initialize screen
 screen = turtle.Screen()
 screen.setup(800, 600)
-screen.title("Pong Game")
+screen.title('Pong Game')
 turtle.hideturtle()
 turtle.speed(0)
 turtle.tracer(0, 0)
@@ -34,6 +34,11 @@ current_hud_ypos = 260  # current head-up display x coordinate
 score_player_1 = 0  # score player 1
 score_player_2 = 0  # score player 2
 
+dividing_line = []  # list which represents pong game dividing line
+current_dividing_line_xpos = []  # list of dividing line current x coordinate
+current_dividing_line_ypos = []  # list of dividing line current y coordinate
+lines = 18  # number of lines
+
 # Variables to control colissions
 touch_upper_wall = False
 touch_lower_wall = True
@@ -51,6 +56,15 @@ def initialize_game():
 
     hud.hideturtle()
     hud.up()
+
+    aux_ypos = -270
+    for i in range(lines):
+        dividing_line.append(turtle.Turtle())
+        current_dividing_line_xpos.append(1)
+        current_dividing_line_ypos.append(aux_ypos)
+        aux_ypos += 32
+    for d in dividing_line:
+        d.up()
 
 
 def left_paddle_up():
@@ -110,19 +124,19 @@ def update_ball_position():
 
     # collision with the upper wall
     if current_ball_ypos > 290:
-        winsound.PlaySound("pong_bounce.wav", winsound.SND_ASYNC)
+        winsound.PlaySound('pong_bounce.wav', winsound.SND_ASYNC)
         touch_upper_wall = True
         touch_lower_wall = False
 
     # collision with the lower wall
     if current_ball_ypos < -290:
-        winsound.PlaySound("pong_bounce.wav", winsound.SND_ASYNC)
+        winsound.PlaySound('pong_bounce.wav', winsound.SND_ASYNC)
         touch_lower_wall = True
         touch_upper_wall = False
 
     # collision with the left wall:
     if current_ball_xpos < -390:
-        winsound.PlaySound("258020__kodack__arcade-bleep-sound.wav", winsound.SND_ASYNC)
+        winsound.PlaySound('258020__kodack__arcade-bleep-sound.wav', winsound.SND_ASYNC)
         current_ball_xpos = 1
         current_ball_ypos = 1
         touch_upper_wall = False
@@ -131,11 +145,11 @@ def update_ball_position():
         touch_left_wall = True
         score_player_2 += 1
         hud.clear()
-        hud.write("{} : {}".format(score_player_1, score_player_2), align="center", font=("Small Fonts", 24, "normal"))
+        hud.write('{} : {}'.format(score_player_1, score_player_2), align='center', font=('Small Fonts', 24, 'normal'))
 
     # collision with the righ wall:
     if current_ball_xpos > 390:
-        winsound.PlaySound("258020__kodack__arcade-bleep-sound.wav", winsound.SND_ASYNC)
+        winsound.PlaySound('258020__kodack__arcade-bleep-sound.wav', winsound.SND_ASYNC)
         current_ball_xpos = 1
         current_ball_ypos = 1
         touch_upper_wall = False
@@ -144,17 +158,17 @@ def update_ball_position():
         touch_left_wall = False
         score_player_1 += 1
         hud.clear()
-        hud.write("{} : {}".format(score_player_1, score_player_2), align="center", font=("Small Fonts", 24, "normal"))
+        hud.write('{} : {}'.format(score_player_1, score_player_2), align='center', font=('Small Fonts', 24, 'normal'))
 
     # collision with left paddle
     if current_ball_xpos < -330 and current_left_paddle_ypos + 50 > current_ball_ypos > current_left_paddle_ypos - 50:
-        winsound.PlaySound("pong_bounce.wav", winsound.SND_ASYNC)
+        winsound.PlaySound('pong_bounce.wav', winsound.SND_ASYNC)
         touch_left_wall = True
         touch_rigth_wall = False
 
     # collision with right paddle
     if current_ball_xpos > 330 and current_right_paddle_ypos + 50 > current_ball_ypos > current_right_paddle_ypos - 50:
-        winsound.PlaySound("pong_bounce.wav", winsound.SND_ASYNC)
+        winsound.PlaySound('pong_bounce.wav', winsound.SND_ASYNC)
         touch_rigth_wall = True
         touch_left_wall = False
 
@@ -178,21 +192,27 @@ def draw():
 
     left_paddle.clear()
     left_paddle.color('white')
-    left_paddle.shape("square")
+    left_paddle.shape('square')
     left_paddle.shapesize(stretch_wid=5, stretch_len=1)
     left_paddle.goto(current_left_paddle_xpos, current_left_paddle_ypos)
 
     right_paddle.clear()
     right_paddle.color('white')
-    right_paddle.shape("square")
+    right_paddle.shape('square')
     right_paddle.shapesize(stretch_wid=5, stretch_len=1)
     right_paddle.goto(current_right_paddle_xpos, current_right_paddle_ypos)
 
-    hud.shape("square")
-    hud.color("white")
+    hud.shape('square')
+    hud.color('white')
     hud.goto(current_hud_xpos, current_hud_ypos)
     hud.clear()
-    hud.write("{} : {}".format(score_player_1, score_player_2), align="center", font=("Small Fonts", 24, "normal"))
+    hud.write('{} : {}'.format(score_player_1, score_player_2), align='center', font=('Small Fonts', 24, 'normal'))
+
+    for i in range(lines):
+        dividing_line[i].clear()
+        dividing_line[i].color('white')
+        dividing_line[i].shape('square')
+        dividing_line[i].goto(current_dividing_line_xpos[i], current_dividing_line_ypos[i])
 
     should_draw = False  # just finished drawing, set should_draw to False
 
