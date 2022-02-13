@@ -1,142 +1,91 @@
 import turtle
-import os
 
-# draw screen
 screen = turtle.Screen()
-screen.title("My Pong")
-screen.bgcolor("black")
-screen.setup(width=800, height=600)
-screen.tracer(0)
+screen.setup(800, 600)
+screen.title("Pong Game")
+turtle.hideturtle()
+turtle.speed(0)
+turtle.tracer(0, 0)
 
-# draw paddle 1
-paddle_1 = turtle.Turtle()
-paddle_1.speed(0)
-paddle_1.shape("square")
-paddle_1.color("white")
-paddle_1.shapesize(stretch_wid=5, stretch_len=1)
-paddle_1.penup()
-paddle_1.goto(-350, 0)
+# Constants
+FPS = 60  # constant: refresh about 30 times per second
+TIMER_VALUE = 1000 // FPS  # the timer value in milliseconds for timer events
+SPEED = 500  # 100 units per second
 
-# draw paddle 2
-paddle_2 = turtle.Turtle()
-paddle_2.speed(0)
-paddle_2.shape("square")
-paddle_2.color("white")
-paddle_2.shapesize(stretch_wid=5, stretch_len=1)
-paddle_2.penup()
-paddle_2.goto(350, 0)
-
-# draw ball
-ball = turtle.Turtle()
-ball.speed(0)
-ball.shape("square")
-ball.color("white")
-ball.penup()
-ball.goto(0, 0)
-ball.dx = 1
-ball.dy = 1
-
-# score
-score_1 = 0
-score_2 = 0
-
-# head-up display
-hud = turtle.Turtle()
-hud.speed(0)
-hud.shape("square")
-hud.color("white")
-hud.penup()
-hud.hideturtle()
-hud.goto(0, 260)
-hud.write("0 : 0", align="center", font=("Press Start 2P", 24, "normal"))
+# Variables
+ball = turtle.Turtle()  # ball of the pong game
+current_ball_xpos = 1  # current ball x coordinate
+current_ball_ypos = 1  # current ball y coordinate
+touch_upper_wall = False
+touch_lower_wall = True
+touch_rigth_wall = False
+touch_left_wall = True
 
 
-def paddle_1_up():
-    y = paddle_1.ycor()
-    if y < 250:
-        y += 30
+def initialze_game():
+    ball.hideturtle()
+    ball.up()
+
+
+def update_position():
+    global current_ball_xpos, current_ball_ypos, touch_upper_wall, touch_lower_wall, touch_rigth_wall, touch_left_wall
+
+    # changes the current position of the ball based on collisions
+    if touch_upper_wall and touch_rigth_wall:
+        current_ball_xpos += SPEED / FPS * -1
+        current_ball_ypos += SPEED / FPS * -1
+    elif touch_upper_wall and touch_left_wall:
+        current_ball_xpos += SPEED / FPS * 1
+        current_ball_ypos += SPEED / FPS * -1
+    elif touch_lower_wall and touch_rigth_wall:
+        current_ball_xpos += SPEED / FPS * -1
+        current_ball_ypos += SPEED / FPS * 1
     else:
-        y = 250
-    paddle_1.sety(y)
-
-
-def paddle_1_down():
-    y = paddle_1.ycor()
-    if y > -250:
-        y += -30
-    else:
-        y = -250
-    paddle_1.sety(y)
-
-
-def paddle_2_up():
-    y = paddle_2.ycor()
-    if y < 250:
-        y += 30
-    else:
-        y = 250
-    paddle_2.sety(y)
-
-
-def paddle_2_down():
-    y = paddle_2.ycor()
-    if y > -250:
-        y += -30
-    else:
-        y = -250
-    paddle_2.sety(y)
-
-
-# keyboard
-screen.listen()
-screen.onkeypress(paddle_1_up, "w")
-screen.onkeypress(paddle_1_down, "s")
-screen.onkeypress(paddle_2_up, "Up")
-screen.onkeypress(paddle_2_down, "Down")
-
-while True:
-    screen.update()
-
-    # ball movement
-    ball.setx(ball.xcor() + ball.dx)
-    ball.sety(ball.ycor() + ball.dy)
+        current_ball_xpos += SPEED / FPS * 1
+        current_ball_ypos += SPEED / FPS * 1
 
     # collision with the upper wall
-    if ball.ycor() > 290:
-        os.system("afplay bounce.wav&")
-        ball.sety(290)
-        ball.dy *= -1
+    if current_ball_ypos > 290:
+        touch_upper_wall = True
+        touch_lower_wall = False
 
-    # collision with lower wall
-    if ball.ycor() < -290:
-        # os.system("afplay bounce.wav&")
-        ball.sety(-290)
-        ball.dy *= -1
+    # collision with the lower wall
+    if current_ball_ypos < -290:
+        touch_lower_wall = True
+        touch_upper_wall = False
 
-    # collision with left wall
-    if ball.xcor() < -390:
-        score_2 += 1
-        hud.clear()
-        hud.write("{} : {}".format(score_1, score_2), align="center", font=("Press Start 2P", 24, "normal"))
-        # os.system("afplay 258020__kodack__arcade-bleep-sound.wav&")
-        ball.goto(0, 0)
-        ball.dx *= -1
+    # collision with the left wall:
+    if current_ball_xpos < -390:
+        touch_left_wall = True
+        touch_rigth_wall = False
 
-    # collision with right wall
-    if ball.xcor() > 390:
-        score_1 += 1
-        hud.clear()
-        hud.write("{} : {}".format(score_1, score_2), align="center", font=("Press Start 2P", 24, "normal"))
-        # os.system("afplay 258020__kodack__arcade-bleep-sound.wav&")
-        ball.goto(0, 0)
-        ball.dx *= -1
+    # collision with the righ wall:
+    if current_ball_xpos > 390:
+        touch_rigth_wall = True
+        touch_left_wall = False
 
-    # collision with the paddle 1
-    if ball.xcor() < -330 and paddle_1.ycor() + 50 > ball.ycor() > paddle_1.ycor() - 50:
-        ball.dx *= -1
-        # os.system("afplay bounce.wav&")
 
-    # collision with the paddle 2
-    if ball.xcor() > 330 and paddle_2.ycor() + 50 > ball.ycor() > paddle_2.ycor() - 50:
-        ball.dx *= -1
-        # os.system("afplay bounce.wav&")
+def update_states():
+    global should_draw
+    update_position()
+    should_draw = True
+    screen.ontimer(update_states, TIMER_VALUE)
+
+
+def draw():
+    global balls, should_draw, current_ball_xpos, current_ball_ypos
+    if not should_draw:  # There is no change. Don't draw and return immediately
+        return
+    ball.clear()  # clear the current drawing
+    ball.color('white')
+    ball.goto(current_ball_xpos, current_ball_ypos)
+    ball.dot(30)
+    should_draw = False  # just finished drawing, set should_draw to False
+
+
+screen.bgcolor('black')
+initialze_game()
+update_states()
+while True:
+    draw()  # draw forever
+    screen.update()
