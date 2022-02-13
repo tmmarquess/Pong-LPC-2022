@@ -16,6 +16,12 @@ SPEED = 500  # 100 units per second
 ball = turtle.Turtle()  # ball of the pong game
 current_ball_xpos = 1  # current ball x coordinate
 current_ball_ypos = 1  # current ball y coordinate
+left_paddle = turtle.Turtle()
+current_left_paddle_xpos = -350  # current left paddle x coordinate
+current_left_paddle_ypos = 1  # current left y coordinate
+right_paddle = turtle.Turtle()
+current_right_paddle_xpos = 350  # current right paddle x coordinate
+current_right_paddle_ypos = 1  # current right y coordinate
 touch_upper_wall = False
 touch_lower_wall = True
 touch_rigth_wall = False
@@ -25,6 +31,8 @@ touch_left_wall = True
 def initialze_game():
     ball.hideturtle()
     ball.up()
+    left_paddle.up()
+    right_paddle.up()
 
 
 def update_position():
@@ -73,13 +81,27 @@ def update_states():
 
 
 def draw():
-    global balls, should_draw, current_ball_xpos, current_ball_ypos
+    global should_draw, current_ball_xpos, current_ball_ypos
     if not should_draw:  # There is no change. Don't draw and return immediately
         return
+
     ball.clear()  # clear the current drawing
     ball.color('white')
     ball.goto(current_ball_xpos, current_ball_ypos)
     ball.dot(30)
+
+    left_paddle.clear()
+    left_paddle.color('white')
+    left_paddle.shape("square")
+    left_paddle.shapesize(stretch_wid=5, stretch_len=1)
+    left_paddle.goto(current_left_paddle_xpos, current_left_paddle_ypos)
+
+    right_paddle.clear()
+    right_paddle.color('white')
+    right_paddle.shape("square")
+    right_paddle.shapesize(stretch_wid=5, stretch_len=1)
+    right_paddle.goto(current_right_paddle_xpos, current_right_paddle_ypos)
+
     should_draw = False  # just finished drawing, set should_draw to False
 
 
