@@ -1,13 +1,12 @@
 import turtle
 import winsound
+import time
 
 # Initialize screen
 screen = turtle.Screen()
 screen.setup(800, 600)
 screen.title('Pong Game')
 turtle.hideturtle()
-turtle.speed(0)
-turtle.tracer(0, 0)
 
 # Constants
 FPS = 30  # constant: refresh about 30 times per second
@@ -49,6 +48,36 @@ touch_upper_wall = False
 touch_lower_wall = True
 touch_rigth_wall = False
 touch_left_wall = True
+
+
+def start_menu():
+    name.speed(0)
+    name.color("white")
+    name.penup()
+    name.hideturtle()
+    name.goto(0, 180)
+    name.write("Pong", align="center", font=("Small Fonts", 35, "normal"))
+
+    hud.speed(0)
+    hud.penup()
+    hud.hideturtle()
+    hud.goto(0, -150)
+
+    cont = 0
+    while loop:
+        cont += 1
+        if cont % 2 == 0:
+            hud.color("red")
+            hud.write("Press Space to start the game", align="center", font=("Small Fonts", 15, "normal"))
+        else:
+            hud.color("blue")
+            hud.write("Press Space to start the game", align="center", font=("Small Fonts", 15, "normal"))
+        time.sleep(0.5)
+        hud.clear()
+
+
+def nulo():
+    return
 
 
 def initialize_game():
@@ -111,7 +140,7 @@ def right_paddle_down():
 
 
 def update_ball_position():
-    global current_ball_xpos, current_ball_ypos, touch_upper_wall, touch_lower_wall, touch_rigth_wall, touch_left_wall,\
+    global current_ball_xpos, current_ball_ypos, touch_upper_wall, touch_lower_wall, touch_rigth_wall, touch_left_wall, \
         current_left_paddle_xpos, current_left_paddle_ypos, current_right_paddle_xpos, current_right_paddle_ypos, \
         player_1_score, player_2_score, speed_up_ball, SPEED
 
@@ -256,16 +285,36 @@ def draw():
     should_draw = False  # just finished drawing, set should_draw to False
 
 
+def start_game():
+    global loop
+    loop = False
+
+    screen.onkeypress(nulo, "space")
+
+    name.clear()
+
+    turtle.speed(0)
+    turtle.tracer(0, 0)
+
+    initialize_game()
+    update_states()
+    while True:
+        draw()  # draw forever
+        screen.update()
+
+
 # keyboard
 screen.listen()
 screen.onkeypress(left_paddle_up, 'w')
 screen.onkeypress(left_paddle_down, 's')
 screen.onkeypress(right_paddle_up, 'Up')
 screen.onkeypress(right_paddle_down, 'Down')
+screen.onkeypress(start_game, "space")
 
 screen.bgcolor('black')
-initialize_game()
-update_states()
-while True:
-    draw()  # draw forever
-    screen.update()
+
+hud = turtle.Turtle()
+name = turtle.Turtle()
+loop = True
+
+start_menu()
