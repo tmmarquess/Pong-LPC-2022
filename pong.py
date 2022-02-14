@@ -18,6 +18,7 @@ SPEED = 200  # ball speed
 ball = turtle.Turtle()  # ball of the pong game
 current_ball_xpos = 1  # current ball x coordinate
 current_ball_ypos = 1  # current ball y coordinate
+speed_up_ball = False  # variable to control ball speed
 
 left_paddle = turtle.Turtle()  # left paddle
 current_left_paddle_xpos = -350  # current left paddle x coordinate
@@ -113,19 +114,27 @@ def right_paddle_down():
 def update_ball_position():
     global current_ball_xpos, current_ball_ypos, touch_upper_wall, touch_lower_wall, touch_rigth_wall, touch_left_wall,\
         current_left_paddle_xpos, current_left_paddle_ypos, current_right_paddle_xpos, current_right_paddle_ypos, \
-        player_1_score, player_2_score
+        player_1_score, player_2_score, speed_up_ball, SPEED
 
     # changes the current position of the ball based on collisions
     if touch_upper_wall and touch_rigth_wall:
+        if speed_up_ball:
+            SPEED += SPEED * 0.001
         current_ball_xpos += SPEED / FPS * -1
         current_ball_ypos += SPEED / FPS * -1
     elif touch_upper_wall and touch_left_wall:
+        if speed_up_ball:
+            SPEED += SPEED * 0.001
         current_ball_xpos += SPEED / FPS * 1
         current_ball_ypos += SPEED / FPS * -1
     elif touch_lower_wall and touch_rigth_wall:
+        if speed_up_ball:
+            SPEED += SPEED * 0.001
         current_ball_xpos += SPEED / FPS * -1
         current_ball_ypos += SPEED / FPS * 1
     else:
+        if speed_up_ball:
+            SPEED += SPEED * 0.001
         current_ball_xpos += SPEED / FPS * 1
         current_ball_ypos += SPEED / FPS * 1
 
@@ -153,6 +162,8 @@ def update_ball_position():
         player_2_score += 1
         player_2_hud.clear()
         player_2_hud.write('{}'.format(player_2_score), align='center', font=('Small Fonts', 24, 'normal'))
+        speed_up_ball = False
+        SPEED = 200
 
     # collision with the righ wall:
     if current_ball_xpos > 390:
@@ -166,18 +177,22 @@ def update_ball_position():
         player_1_score += 1
         player_1_hud.clear()
         player_1_hud.write('{}'.format(player_1_score), align='center', font=('Small Fonts', 24, 'normal'))
+        speed_up_ball = False
+        SPEED = 200
 
     # collision with left paddle
     if current_ball_xpos < -330 and current_left_paddle_ypos + 50 > current_ball_ypos > current_left_paddle_ypos - 50:
         winsound.PlaySound('pong_bounce.wav', winsound.SND_ASYNC)
         touch_left_wall = True
         touch_rigth_wall = False
+        speed_up_ball = True
 
     # collision with right paddle
     if current_ball_xpos > 330 and current_right_paddle_ypos + 50 > current_ball_ypos > current_right_paddle_ypos - 50:
         winsound.PlaySound('pong_bounce.wav', winsound.SND_ASYNC)
         touch_rigth_wall = True
         touch_left_wall = False
+        speed_up_ball = True
 
 
 def update_states():
