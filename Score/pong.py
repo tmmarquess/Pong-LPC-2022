@@ -1,3 +1,24 @@
+'''
+    if player_1_score == 0 or player_2_score == 0:
+        should_draw = False
+        hide_dividing_line()
+        player_1_hud.clear()
+        player_2_hud.clear()
+
+        screen.update()
+
+        win_screen(player_1_score, player_2_score)
+
+        screen.onkeypress(start_game(), "space")
+        screen.listen()
+
+        show_dividing_line()
+        player_1_score = 2
+        player_2_score = 2
+        draw()
+        screen.update()
+'''
+
 import turtle
 import winsound
 import time
@@ -35,8 +56,8 @@ player_2_hud = turtle.Turtle()  # player 2 head-up display
 current_player_2_hud_xpos = 50  # current  player 2 head-up display x coordinate
 current_player_2_ypos = 260  # current  player 2 head-up display x coordinate
 
-player_1_score = 0  # player 1 score
-player_2_score = 0  # player 2 score
+player_1_score = 2  # player 1 score
+player_2_score = 2  # player 2 score
 
 dividing_line = []  # list which represents pong game dividing line
 current_dividing_line_xpos = []  # list of dividing line current x coordinate
@@ -51,6 +72,7 @@ touch_left_wall = True
 
 
 def start_menu():
+    name = turtle.Turtle()
     name.speed(0)
     name.color("white")
     name.penup()
@@ -58,6 +80,7 @@ def start_menu():
     name.goto(0, 180)
     name.write("Pong", align="center", font=("Small Fonts", 35, "normal"))
 
+    hud = turtle.Turtle()
     hud.speed(0)
     hud.penup()
     hud.hideturtle()
@@ -74,6 +97,10 @@ def start_menu():
             hud.write("Press Space to start the game", align="center", font=("Small Fonts", 15, "normal"))
         time.sleep(0.5)
         hud.clear()
+
+    screen.onkeypress(nulo, "space")
+
+    name.clear()
 
 
 def nulo():
@@ -101,6 +128,16 @@ def initialize_game():
         aux_ypos += 32
     for d in dividing_line:
         d.up()
+
+
+def hide_dividing_line():
+    for i in range(lines):
+        dividing_line[i].hideturtle()
+
+
+def show_dividing_line():
+    for i in range(lines):
+        dividing_line[i].showturtle()
 
 
 def left_paddle_up():
@@ -187,7 +224,7 @@ def update_ball_position():
         touch_lower_wall = True
         touch_rigth_wall = False
         touch_left_wall = True
-        player_2_score += 1
+        player_2_score -= 1
         player_2_hud.clear()
         player_2_hud.write('{}'.format(player_2_score), align='center', font=('Small Fonts', 24, 'normal'))
         speed_up_ball = False
@@ -202,7 +239,7 @@ def update_ball_position():
         touch_lower_wall = True
         touch_rigth_wall = True
         touch_left_wall = False
-        player_1_score += 1
+        player_1_score -= 1
         player_1_hud.clear()
         player_1_hud.write('{}'.format(player_1_score), align='center', font=('Small Fonts', 24, 'normal'))
         speed_up_ball = False
@@ -236,7 +273,23 @@ def update_ball_position():
 
 
 def update_states():
-    global should_draw
+    global should_draw, player_1_score, player_2_score
+
+    if player_1_score == 0 or player_2_score == 0:
+
+        turtle.clearscreen()
+        keyboard()
+
+        screen.bgcolor('black')
+
+        win_screen(player_1_score, player_2_score)
+
+        player_1_score = 2
+        player_2_score = 2
+
+        draw()
+        start_menu()
+
     update_ball_position()
     should_draw = True
     screen.ontimer(update_states, TIMER_VALUE)
@@ -285,36 +338,66 @@ def draw():
     should_draw = False  # just finished drawing, set should_draw to False
 
 
+def win_screen(score1, score2):
+
+    win = turtle.Turtle()
+    win.speed(0)
+    win.color("white")
+    win.penup()
+    win.hideturtle()
+    win.goto(0, 0)
+
+    go = turtle.Turtle()
+    go.speed(0)
+    go.color("white")
+    go.penup()
+    go.hideturtle()
+    go.goto(0, -150)
+
+    if score1 == 0:
+        win.write("Player 1 Wins", align="center", font=("Small Fonts", 35, "normal"))
+
+    elif score2 == 0:
+        win.write("Player 2 Wins", align="center", font=("Small Fonts", 35, "normal"))
+
+    go.write("Press Space to start the game", align="center", font=("Small Fonts", 15, "normal"))
+
+    win.clear()
+    go.clear()
+
+
 def start_game():
     global loop
     loop = False
-
-    screen.onkeypress(nulo, "space")
-
-    name.clear()
+#
+#    screen.onkeypress(nulo, "space")
+#
+#    name.clear()
 
     turtle.speed(0)
     turtle.tracer(0, 0)
 
     initialize_game()
     update_states()
+
     while True:
         draw()  # draw forever
         screen.update()
 
 
 # keyboard
-screen.listen()
-screen.onkeypress(left_paddle_up, 'w')
-screen.onkeypress(left_paddle_down, 's')
-screen.onkeypress(right_paddle_up, 'Up')
-screen.onkeypress(right_paddle_down, 'Down')
-screen.onkeypress(start_game, "space")
+
+def keyboard():
+    screen.listen()
+    screen.onkeypress(left_paddle_up, 'w')
+    screen.onkeypress(left_paddle_down, 's')
+    screen.onkeypress(right_paddle_up, 'Up')
+    screen.onkeypress(right_paddle_down, 'Down')
+    screen.onkeypress(start_game, "space")
 
 screen.bgcolor('black')
 
-hud = turtle.Turtle()
-name = turtle.Turtle()
 loop = True
 
+keyboard()
 start_menu()
