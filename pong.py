@@ -152,7 +152,7 @@ def update_ball_position():
 
     # collision with the left wall:
     if current_ball_xpos < -390:
-        winsound.PlaySound('258020__kodack__arcade-bleep-sound.wav', winsound.SND_ASYNC)
+        winsound.PlaySound('pong_258020__kodack__arcade-bleep-sound.wav', winsound.SND_ASYNC)
         current_ball_xpos = 1
         current_ball_ypos = 1
         touch_upper_wall = False
@@ -167,7 +167,7 @@ def update_ball_position():
 
     # collision with the righ wall:
     if current_ball_xpos > 390:
-        winsound.PlaySound('258020__kodack__arcade-bleep-sound.wav', winsound.SND_ASYNC)
+        winsound.PlaySound('pong_258020__kodack__arcade-bleep-sound.wav', winsound.SND_ASYNC)
         current_ball_xpos = 1
         current_ball_ypos = 1
         touch_upper_wall = False
