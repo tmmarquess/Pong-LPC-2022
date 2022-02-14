@@ -20,7 +20,7 @@ Repositório para armazenar o exercício em equipe de melhorar o código do jogo
 
 O projeto ainda está em **andamento**, abaixo seguem os percentuais concluídos de cada seção de issues:
 
-1. **Enhancements**: `84%` (5/6)
+1. **Enhancements**: `100%` (6/6)
 2. **Bugs**: `100%` (3/3)
 
 ## Como executar 🚀
