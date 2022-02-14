@@ -52,7 +52,6 @@ touch_left_wall = True
 
 
 def initialize_game():
-    ball.hideturtle()
     ball.up()
 
     left_paddle.up()
@@ -181,15 +180,27 @@ def update_ball_position():
         SPEED = 200
 
     # collision with left paddle
-    if current_ball_xpos < -330 and current_left_paddle_ypos + 50 > current_ball_ypos > current_left_paddle_ypos - 50:
+    if current_ball_xpos < -330 and current_left_paddle_ypos + 40 > current_ball_ypos > current_left_paddle_ypos - 40:
+        print('Bola tocou raquete esquerda!')
+        print(f'Coordenada x da bola: {current_ball_xpos}')
+        print(f'Coordenada y da bola: {current_ball_ypos}')
+        print(f'Coordenada x da raquete: {current_left_paddle_xpos}')
+        print(f'Coordenada y da raquete: {current_left_paddle_ypos}')
         winsound.PlaySound('pong_bounce.wav', winsound.SND_ASYNC)
+        current_ball_xpos += SPEED / FPS * 1 + 50
         touch_left_wall = True
         touch_rigth_wall = False
         speed_up_ball = True
 
     # collision with right paddle
-    if current_ball_xpos > 330 and current_right_paddle_ypos + 50 > current_ball_ypos > current_right_paddle_ypos - 50:
+    if current_ball_xpos > 330 and current_right_paddle_ypos + 40 > current_ball_ypos > current_right_paddle_ypos - 40:
+        print('Bola tocou raquete direita!')
+        print(f'Coordenada x da bola: {current_ball_xpos}')
+        print(f'Coordenada y da bola: {current_ball_ypos}')
+        print(f'Coordenada x da raquete: {current_right_paddle_xpos}')
+        print(f'Coordenada y da raquete: {current_right_paddle_ypos}')
         winsound.PlaySound('pong_bounce.wav', winsound.SND_ASYNC)
+        current_ball_xpos += SPEED / FPS * -1 - 50
         touch_rigth_wall = True
         touch_left_wall = False
         speed_up_ball = True
@@ -209,8 +220,8 @@ def draw():
 
     ball.clear()  # clear the current drawing
     ball.color('white')
+    ball.shape('square')
     ball.goto(current_ball_xpos, current_ball_ypos)
-    ball.dot(30)
 
     left_paddle.clear()
     left_paddle.color('white')
